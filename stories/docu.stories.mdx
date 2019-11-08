@@ -1,0 +1,44 @@
+import { Story, Preview, Meta, Props } from '@storybook/addon-docs/blocks';
+import { html } from 'lit-html';
+
+import '../flexible-wizard.js';
+
+<Meta title="Card|Docs" />
+
+# FlexibleWizard
+
+A component for...
+
+## Features:
+
+- a
+- b
+- ...
+
+## How to use
+
+### Installation
+
+```bash
+yarn add flexible-wizard
+```
+
+```js
+import 'flexible-wizard/flexible-wizard.js';
+```
+
+<Preview withToolbar>
+  <Story name="Simple" height="220px">
+    {html`
+      <flexible-wizard></flexible-wizard>
+    `}
+  </Story>
+</Preview>
+
+## API
+
+<Props of="flexible-wizard" />
+
+## Playground
+
+Please select "Card Playground" story and open the knobs panel.
