@@ -14,17 +14,13 @@ import './components/flexible-step.js';
 //      -> maintain button progression affordances
 //      -> handle validity changes
 //      -> handle server communication at appropriate times
-//  step machines
-//      -> declare data needs (compose a gql query)
-//      -> consume fields
-//      -> communicate validity, form state
-//      -> provide extensible custom validation hook
-//      -> render logic
 //  updateMachine
 //      -> loading
 //      -> data
 //      -> error
 //      -> called (track callCount?)
+
+const currentStep = (steps, slug) => steps.find(s => s.slug === slug);
 
 export class FlexibleWizard extends LitElement {
   static get styles() {
@@ -41,6 +37,11 @@ export class FlexibleWizard extends LitElement {
 
   static get properties() {
     return {
+      hasNextPage: { type: Boolean },
+      hasPreviousPage: { type: Boolean },
+      slug: { type: String },
+
+      state: { type: Object },
       title: { type: String },
       status: { type: String },
       transition: { type: String },
@@ -52,26 +53,36 @@ export class FlexibleWizard extends LitElement {
   constructor() {
     super();
     this.title = 'Hey there';
+
+    const params = new URLSearchParams(window.location.search);
+    const slug = params.get('slug') || '';
+
     this.service = interpret(mapMachine, { context: engageAndAward })
       .onTransition(state => {
         this.onTransition(state);
       })
       .start();
 
-    this.service.send({ type: 'MAP.POPULATE', map: engageAndAward });
+    this.service.send({ type: 'MAP.POPULATE', slug, map: engageAndAward });
   }
 
   onTransition(state) {
     this.state = state;
     console.log(state);
 
-    const { status, map, type } = state.context;
+    const { status, map, type, slug } = state.context;
 
     this.title = type;
     this.status = status;
 
+    // TODO: probably be good to implement "selectors" or "lenses" in separate functions and replace this.
     if (state.matches('active')) {
-      this.transitionCriteria = map.statuses[status].transitionCriteria;
+      const currentStatus = map.statuses[status];
+      this.transitionCriteria = currentStatus.transitionCriteria;
+
+      this.slug = slug;
+      this.steps = currentStatus.steps;
+      this.currentStep = currentStep(currentStatus.steps, slug);
     }
   }
 
@@ -81,10 +92,31 @@ export class FlexibleWizard extends LitElement {
   }
 
   render() {
-    return html`
+    const globalDetails = html`
       <h2>${this.title}</h2>
       <p>Transition: ${this.transitionCriteria}</p>
       <p>Status: ${this.status}</p>
     `;
+
+    const steppers = html`
+      ${this.steps.map(
+        step =>
+          html`
+            ${step.slug}
+          `,
+      )}
+    `;
+
+    if (this.service.state.matches('active')) {
+      return html`
+        ${globalDetails} ${steppers}
+        <p>Slug: ${this.slug}</p>
+        <div>
+          <flexible-step .step=${this.currentStep}></flexible-step>
+        </div>
+      `;
+    }
+
+    return html``;
   }
 }

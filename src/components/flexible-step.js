@@ -1,15 +1,30 @@
 import { LitElement, html } from 'lit-element';
+import './flexible-field.js';
 
-export class FlexibleWizard extends LitElement {
+//  step machines
+//      -> declare data needs (compose a gql query)
+//      -> consume fields
+//      -> communicate validity, form state
+//      -> provide extensible custom validation hook
+//      -> render logic
+
+export class FlexibleStep extends LitElement {
   static get properties() {
-    return {};
+    return {
+      step: { type: Object },
+    };
   }
 
   render() {
     return html`
-      Step!
+      ${this.step.fields.map(
+        f =>
+          html`
+            <flexible-field .field=${f}></flexible-field>
+          `,
+      )}
     `;
   }
 }
 
-window.customElements.define('flexible-step', FlexibleWizard);
+window.customElements.define('flexible-step', FlexibleStep);

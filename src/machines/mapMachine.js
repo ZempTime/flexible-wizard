@@ -7,7 +7,7 @@ const mapMachine = Machine({
     status: 'draft',
     map: null,
     steps: [],
-    step: '',
+    slug: '',
   },
   initial: 'dormant',
   states: {
@@ -31,6 +31,7 @@ const mapMachine = Machine({
             ref: spawn(stepMachine.withContext(step)),
           }));
         },
+        slug: (ctx, e) => e.slug || ctx.map.statuses[ctx.status].steps[0].slug,
       }),
       on: {
         '': 'active',

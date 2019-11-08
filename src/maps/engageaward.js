@@ -25,6 +25,43 @@ const engageAndAward = {
             },
           ],
         },
+        {
+          name: 'Budget',
+          slug: 'budget',
+          fields: [
+            {
+              name: 'budgetId',
+              state: 'editing',
+              type: 'budget',
+            },
+          ],
+        },
+        {
+          name: 'Review',
+          slug: 'review',
+          fields: [
+            {
+              name: 'name',
+              state: 'viewing',
+              type: 'text',
+            },
+            {
+              name: 'from',
+              state: 'viewing',
+              type: 'datetime',
+            },
+            {
+              name: 'thru',
+              state: 'viewing',
+              type: 'datetime',
+            },
+            {
+              name: 'budgetId',
+              state: 'viewing',
+              type: 'budget',
+            },
+          ],
+        },
       ],
     },
   },

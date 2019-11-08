@@ -1,4 +1,4 @@
-import { Machine } from 'xstate/es';
+import { Machine } from 'xstate/dist/xstate.web.js';
 
 const stepMachine = Machine({
   id: 'step',
