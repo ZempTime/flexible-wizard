@@ -4,6 +4,14 @@ import engageAndAward from './maps/engageaward.js';
 import mapMachine from './machines/mapMachine.js';
 import './components/flexible-step.js';
 
+import WizardMachine from './machines/wizardMachine2';
+
+const service = interpret(WizardMachine)
+  .onTransition(state => {})
+  .start();
+
+window.service = service;
+
 // Have a declared data structure
 // which renders out steps
 // wizard machine to maintain state of all steps

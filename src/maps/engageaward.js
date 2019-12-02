@@ -26,6 +26,18 @@ const engageAndAward = {
           ],
         },
         {
+          name: 'Audiencee',
+          slug: 'audience',
+          fields: [
+            {
+              name: 'receivingAudienceId',
+              state: 'editing',
+              type: 'audience',
+              strategy: 'loyalty',
+            },
+          ],
+        },
+        {
           name: 'Budget',
           slug: 'budget',
           fields: [
